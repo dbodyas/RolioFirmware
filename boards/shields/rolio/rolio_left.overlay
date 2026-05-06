@@ -46,3 +46,8 @@
         wakeup-sources = <&wakeup_scan>;
     };
 };
+
+/* Enable trackpad input-listener on central side */
+&glidepoint_listener {
+    status = "okay";
+};

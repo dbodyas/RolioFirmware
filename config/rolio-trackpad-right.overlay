@@ -1,0 +1,85 @@
+/*
+ * Cirque TM040040 SPI Trackpad — Right Half Overlay
+ *
+ * Pin wiring (nice!nano v2 clone → Cirque FFC):
+ *   SCK  : D3 / P0.20  → Pin 1
+ *   MISO : P1.01       → Pin 2
+ *   CS   : D1 / P0.06  → Pin 3  (ACTIVE_LOW for Cirque)
+ *   DR   : D4 / P0.22  → Pin 4  (data-ready interrupt)
+ *   MOSI : D2 / P0.17  → Pin 5
+ *   VDD  : VCC / P0.13 → Pin 12
+ *   GND  : GND         → Pin 11
+ *   Pins 6-10: leave unconnected
+ *
+ * Applied via cmake-args:
+ *   -DEXTRA_DTC_OVERLAY_FILE=../../config/rolio-trackpad-right.overlay
+ */
+
+#include <dt-bindings/zmk/input_transform.h>
+
+/*
+ * Override the SPI0 pinctrl to use P1.01 for MISO.
+ * The base nice_nano_v2.overlay sets MISO to P0.25 (not broken out).
+ */
+&pinctrl {
+    spi0_default: spi0_default {
+        group1 {
+            psels = <NRF_PSEL(SPIM_SCK,  0, 20)>,
+                    <NRF_PSEL(SPIM_MOSI, 0, 17)>,
+                    <NRF_PSEL(SPIM_MISO, 1,  1)>;
+        };
+    };
+    spi0_sleep: spi0_sleep {
+        group1 {
+            psels = <NRF_PSEL(SPIM_SCK,  0, 20)>,
+                    <NRF_PSEL(SPIM_MOSI, 0, 17)>,
+                    <NRF_PSEL(SPIM_MISO, 1,  1)>;
+            low-power-enable;
+        };
+    };
+};
+
+/*
+ * Configure SPI0 for the Cirque trackpad.
+ * CS is active-low (Cirque Pinnacle spec) on P0.06 (D1).
+ * NOTE: This uses the same spi0 node that the display shield
+ *       (nice_view_spi) would use, but we are NOT including
+ *       the vista508 shield in this build — so no conflict.
+ */
+&spi0 {
+    status = "okay";
+    compatible = "nordic,nrf-spim";
+    pinctrl-0 = <&spi0_default>;
+    pinctrl-1 = <&spi0_sleep>;
+    pinctrl-names = "default", "sleep";
+    cs-gpios = <&gpio0 6 GPIO_ACTIVE_LOW>;
+
+    glidepoint: glidepoint@0 {
+        compatible = "cirque,pinnacle";
+        reg = <0>;
+        spi-max-frequency = <1000000>;
+        status = "okay";
+
+        /* Data Ready interrupt — wired to D4 / P0.22 */
+        dr-gpios = <&gpio0 22 GPIO_ACTIVE_HIGH>;
+
+        /* 4x sensitivity (most responsive setting) */
+        sensitivity = "4x";
+
+        /* Enable sleep mode between reads (good for battery) */
+        sleep;
+
+        /* Disable on-chip tap detection (ZMK handles gestures) */
+        no-taps;
+    };
+};
+
+/*
+ * Connect the shared input-split (defined in rolio.dtsi) to the
+ * physical trackpad. The Y-axis is inverted per Cirque datasheet.
+ * Events are forwarded over BLE to the central (left) side.
+ */
+&glidepoint_split {
+    device = <&glidepoint>;
+    input-processors = <&zip_xy_transform INPUT_TRANSFORM_Y_INVERT>;
+};
