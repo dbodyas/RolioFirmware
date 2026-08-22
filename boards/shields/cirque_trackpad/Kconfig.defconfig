@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The ZMK Contributors
+# SPDX-License-Identifier: MIT
+
+if SHIELD_CIRQUE_TRACKPAD
+
+config INPUT
+    default y
+
+config INPUT_PINNACLE
+    default y
+
+config SPI
+    default y
+
+config ZMK_POINTING
+    default y
+
+endif # SHIELD_CIRQUE_TRACKPAD

@@ -46,3 +46,7 @@
         wakeup-sources = <&wakeup_scan>;
     };
 };
+
+&glidepoint_listener {
+    status = "okay";
+};

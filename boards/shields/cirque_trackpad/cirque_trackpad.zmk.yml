@@ -1,0 +1,7 @@
+file_format: "1"
+id: cirque_trackpad
+name: Cirque Trackpad
+type: shield
+url: https://github.com/MickiusMousius/RolioFirmware
+features:
+  - pointing

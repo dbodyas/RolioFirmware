@@ -82,7 +82,9 @@ elif action == 'get':
         # Common aliases
         aliases = {
             'left': 'zmk-rolio461-nicenano_v2-vista508-left',
-            'right': 'zmk-rolio461-nicenano_v2-vista508-right',
+            'right': 'zmk-rolio461-nicenano_v2-cirque_trackpad-right',
+            'trackpad': 'zmk-rolio461-nicenano_v2-cirque_trackpad-right',
+            'cirque': 'zmk-rolio461-nicenano_v2-cirque_trackpad-right',
             'reset': 'zmk-nicenano_v2-settings_reset',
             'nice-left': 'zmk-rolio461-nicenano_v2-nice_view-left',
             'nice-right': 'zmk-rolio461-nicenano_v2-nice_view-right',
@@ -104,7 +106,7 @@ elif action == 'get':
 elif action == 'test_targets':
     test_artifacts = [
         'zmk-rolio461-nicenano_v2-vista508-left',
-        'zmk-rolio461-nicenano_v2-vista508-right',
+        'zmk-rolio461-nicenano_v2-cirque_trackpad-right',
         'zmk-nicenano_v2-settings_reset'
     ]
     matched_targets = [t for t in targets if t.get('artifact-name') in test_artifacts]
@@ -146,12 +148,11 @@ show_help() {
     echo
     echo -e "${CYAN}Available Aliases:${NC}"
     echo "  left         -> zmk-rolio461-nicenano_v2-vista508-left"
-    echo "  right        -> zmk-rolio461-nicenano_v2-vista508-right"
+    echo "  right        -> zmk-rolio461-nicenano_v2-cirque_trackpad-right"
+    echo "  trackpad     -> zmk-rolio461-nicenano_v2-cirque_trackpad-right"
     echo "  reset        -> zmk-nicenano_v2-settings_reset"
     echo "  nice-left    -> zmk-rolio461-nicenano_v2-nice_view-left"
     echo "  nice-right   -> zmk-rolio461-nicenano_v2-nice_view-right"
-    echo "  mikoto-left  -> zmk-rolio461-mikoto720-vista508-left"
-    echo "  mikoto-right -> zmk-rolio461-mikoto720-vista508-right"
 }
 
 # ------------------------------------------------------------------------------
