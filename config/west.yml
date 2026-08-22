@@ -4,13 +4,15 @@ manifest:
       url-base: https://github.com/zmkfirmware
     - name: MickiusMousius
       url-base: https://github.com/MickiusMousius
+    - name: elpekenin
+      url-base: https://github.com/elpekenin
   projects:
     - name: zmk
       import: app/west.yml
       remote: zmkfirmware
       revision: main
     - name: zmk-userspace
-      remote: MickiusMousius
+      remote: elpekenin
       revision: main
     - name: zmk-patch-batterylevel
       remote: MickiusMousius

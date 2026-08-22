@@ -1,2 +1,5 @@
 .DS_Store
 image_converter/venv
+artifacts/
+build/
+.build/
